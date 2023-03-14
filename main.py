@@ -1,5 +1,5 @@
 from ai import Py2048AI
-from .logic import Py2048
+from logic import Py2048
 import time
 import copy
 
@@ -21,7 +21,7 @@ def printBoard(board):
 
 
 def runGame():
-    ai = Py2048AI(3)
+    ai = Py2048AI(5)
     game = Py2048(4, 4)
 
     while not game.gameover:
@@ -36,6 +36,7 @@ def runGame():
     return score(game)
 
 
+runGame()
 # def main():
 #     filename = 'ExpectiMax_total_score_heuristic.csv'
 #     with open(filename, 'w') as f:

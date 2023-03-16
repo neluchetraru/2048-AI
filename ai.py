@@ -12,12 +12,48 @@ class Py2048AI:
     def __init__(self, depth):
         self.depth = depth
 
-    def evaluate(self, game):
-        sum = 0
-        for row in game.board:
-            for elem in row:
-                sum += elem
-        return sum
+    # def evaluate(self, game):
+    #     sum = 0
+    #     for row in game.board:
+    #         for elem in row:
+    #             sum += elem
+    #     return sum
+    
+    # def evaluate(self, game):
+    #     zero_tiles = 0
+    #     for row in game.board:
+    #         zero_tiles += row.count(0)
+    #     return zero_tiles
+    
+    # def evaluate(self, game):
+    #     zero_tiles = 0
+    #     sum = 0
+
+    #     for row in game.board:
+    #         zero_tiles += row.count(0)
+        
+        
+    #     for row in game.board:
+    #         for elem in row:
+    #             sum += elem
+        
+    #     avg_eval = (zero_tiles + sum)/2
+    #     return avg_eval
+
+    # def evaluate(self,game):
+    #     weight_matrix = [[8,4,4,8],
+    #                      [4,3,3,4],
+    #                      [4,3,3,4],
+    #                      [8,4,4,8]]
+    #     sum = 0
+
+    #     for i in range(4):
+    #         for j in range(4):
+    #             if game.board[i][j] != 0:
+    #                 corner_distance = game.board[i][j] * weight_matrix[i][j] 
+    #             sum += corner_distance
+
+    #     return sum
 
     def expectimax(self, game, player, depth):
         if depth == 0:

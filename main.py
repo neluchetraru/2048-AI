@@ -21,7 +21,7 @@ def printBoard(board):
 
 
 def runGame():
-    ai = Py2048AI(5)
+    ai = Py2048AI(3)
     game = Py2048(4, 4)
 
     while not game.gameover:
@@ -31,6 +31,7 @@ def runGame():
         printBoard(game.board)
         game.add_tile()
         printBoard(game.board)
+        print('Score: ', score(game))
         game.check_gameover()
 
     return score(game)

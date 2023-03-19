@@ -19,11 +19,11 @@ class Py2048AI:
     #             sum += elem
     #     return sum
     
-    # def evaluate(self, game):
-    #     zero_tiles = 0
-    #     for row in game.board:
-    #         zero_tiles += row.count(0)
-    #     return zero_tiles
+    def evaluate(self, game):
+        zero_tiles = 0
+        for row in game.board:
+            zero_tiles += row.count(0)
+        return zero_tiles
     
     # def evaluate(self, game):
     #     zero_tiles = 0

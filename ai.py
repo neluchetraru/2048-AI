@@ -87,23 +87,15 @@ class Py2048AI:
         
         return sum
     
-    def row_monotonicity(self, game):
-        count = 0
-        for row in game.board:
-            if sorted(row) == row or sorted(row, reverse=True) == row:
-                count += 1
-        return count
-    
-    def row_monotonicity2(self,game):
+
+    def evaluate_mono(self,game):
         best = -1
-        for _ in range(4):
+        for i in range(4):
             current = 0
-            # Check monotonicity in rows
             for row in range(4):
                 for col in range(3):
                     if game.board[row][col] >= game.board[row][col + 1]:
                         current += 1
-            # Check monotonicity in columns
             for col in range(4):
                 for row in range(3):
                     if game.board[row][col] >= game.board[row + 1][col]:
@@ -113,6 +105,38 @@ class Py2048AI:
             # Rotate the board 90 degrees clockwise
             game.board = list(zip(*game.board[::-1]))
         return best
+        
+    def evaluate_weight_plus_sum(self,game):
+        sum = self.evaluate_weigh_matrix(game) + self.evaluate_sum(game) + self.evaluate_zero_tiles(game)
+        return sum
+
+
+
+
+
+
+
+
+
+    # def row_monotonicity2(self,game):
+    #     best = -1
+    #     for _ in range(4):
+    #         current = 0
+    #         # Check monotonicity in rows
+    #         for row in range(4):
+    #             for col in range(3):
+    #                 if game.board[row][col] >= game.board[row][col + 1]:
+    #                     current += 1
+    #         # Check monotonicity in columns
+    #         for col in range(4):
+    #             for row in range(3):
+    #                 if game.board[row][col] >= game.board[row + 1][col]:
+    #                     current += 1
+    #         if current > best:
+    #             best = current
+    #         # Rotate the board 90 degrees clockwise
+    #         game.board = list(zip(*game.board[::-1]))
+    #     return best
 
     def evaluate(self, game, eval_func):
         if eval_func == "sum":
@@ -128,7 +152,9 @@ class Py2048AI:
         elif eval_func == "uniformZero":
              return self.evaluate_uniform_plus_zero(game)
         elif eval_func == "mono":
-             return self.row_monotonicity2(game)
+             return self.evaluate_mono(game)
+        elif eval_func == "weightSum":
+             return self.evaluate_weight_plus_sum(game) 
         else:
             raise ValueError('Evaluation function doesnt exist')
 

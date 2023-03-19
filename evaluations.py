@@ -19,13 +19,14 @@ def score(game):
             sum += elem
     return sum
 
-def reached2048(game):
-    win = False
+def reached2048(game,win):
+    
     for row in game.board:
         for elem in row:
             if elem == 2048:
                 win = True
     return win
+
 
 def test_evaluation(num_games,eval_func):
 
@@ -33,6 +34,8 @@ def test_evaluation(num_games,eval_func):
     
     
     scores = []
+    win = False
+    wins = 0
 
     for i in range(num_games):
         game = Py2048(4, 4)
@@ -44,8 +47,11 @@ def test_evaluation(num_games,eval_func):
             game.check_gameover()
 
         scores.append(score(game))
+        wins +=  reached2048(game,win)
+       
     
     print("Average score: ", sum(scores) / len(scores))
+    print("Number of wins: ", wins)
     print(scores)
 
 

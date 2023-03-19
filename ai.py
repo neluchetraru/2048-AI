@@ -25,6 +25,16 @@ class Py2048AI:
             zero_tiles += row.count(0)
         return zero_tiles
     
+    def evaluate_uniformity(self,game):
+        tiles = [0]
+        same_tiles = 0
+        for row in game.board:
+            for elem in row:
+                tiles[elem] += 1
+        
+
+            
+    
     def evaluate_zero_plus_sum(self, game):
         zero_tiles = 0
         sum = 0
@@ -41,7 +51,7 @@ class Py2048AI:
         return avg_eval
 
     def evaluate_weigh_matrix(self,game):
-        weight_matrix = [[100,25,25,100],
+        weight_matrix1 = [[100,25,25,100],
                          [25,5,5,25],
                          [25,5,5,25],
                          [100,25,25,100]]
@@ -56,7 +66,7 @@ class Py2048AI:
         for i in range(4):
             for j in range(4):
                 if game.board[i][j] != 0:
-                    sum += game.board[i][j] * weight_matrix[i][j] 
+                    sum += game.board[i][j] * weight_matrix2[i][j] 
         
         return sum
 

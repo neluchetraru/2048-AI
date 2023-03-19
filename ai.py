@@ -24,17 +24,7 @@ class Py2048AI:
         for row in game.board:
             zero_tiles += row.count(0)
         return zero_tiles
-    
-    def evaluate_uniformity(self,game):
-        tiles = [0]
-        same_tiles = 0
-        for row in game.board:
-            for elem in row:
-                tiles[elem] += 1
-        
 
-            
-    
     def evaluate_zero_plus_sum(self, game):
         zero_tiles = 0
         sum = 0
@@ -49,6 +39,33 @@ class Py2048AI:
         
         avg_eval = (zero_tiles + sum)/2
         return avg_eval
+    
+    def evaluate_uniformity(self,game):
+        tiles = [0]*2049
+        same_tiles = 0
+        for row in game.board:
+            for elem in row:
+                tiles[elem] += 1
+        
+        same_tiles = sum(tiles)
+        return same_tiles
+       
+    
+    def evaluate_uniform_plus_zero(self,game):
+        tiles = [0]*2049
+        same_tiles = 0
+        for row in game.board:
+            for elem in row:
+                tiles[elem] += 1
+        
+        same_tiles = sum(tiles)
+        
+        zero_tiles = 0
+        for row in game.board:
+            zero_tiles += row.count(0)
+        
+        total = same_tiles + zero_tiles
+        return total
 
     def evaluate_weigh_matrix(self,game):
         weight_matrix1 = [[100,25,25,100],
@@ -69,6 +86,33 @@ class Py2048AI:
                     sum += game.board[i][j] * weight_matrix2[i][j] 
         
         return sum
+    
+    def row_monotonicity(self, game):
+        count = 0
+        for row in game.board:
+            if sorted(row) == row or sorted(row, reverse=True) == row:
+                count += 1
+        return count
+    
+    def row_monotonicity2(self,game):
+        best = -1
+        for _ in range(4):
+            current = 0
+            # Check monotonicity in rows
+            for row in range(4):
+                for col in range(3):
+                    if game.board[row][col] >= game.board[row][col + 1]:
+                        current += 1
+            # Check monotonicity in columns
+            for col in range(4):
+                for row in range(3):
+                    if game.board[row][col] >= game.board[row + 1][col]:
+                        current += 1
+            if current > best:
+                best = current
+            # Rotate the board 90 degrees clockwise
+            game.board = list(zip(*game.board[::-1]))
+        return best
 
     def evaluate(self, game, eval_func):
         if eval_func == "sum":
@@ -79,6 +123,12 @@ class Py2048AI:
              return self.evaluate_zero_plus_sum(game)
         elif eval_func == "weightMatrix":
              return self.evaluate_weigh_matrix(game)
+        elif eval_func == "uniform":
+             return self.evaluate_uniformity(game)
+        elif eval_func == "uniformZero":
+             return self.evaluate_uniform_plus_zero(game)
+        elif eval_func == "mono":
+             return self.row_monotonicity2(game)
         else:
             raise ValueError('Evaluation function doesnt exist')
 

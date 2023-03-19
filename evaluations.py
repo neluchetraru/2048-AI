@@ -19,9 +19,17 @@ def score(game):
             sum += elem
     return sum
 
+def reached2048(game):
+    win = False
+    for row in game.board:
+        for elem in row:
+            if elem == 2048:
+                win = True
+    return win
+
 def test_evaluation(num_games,eval_func):
 
-    ai = Py2048AI(5)
+    ai = Py2048AI(3)
     
     
     scores = []

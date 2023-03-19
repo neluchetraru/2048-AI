@@ -17,7 +17,7 @@ weight matrix1:Average score:  509.6
 weight matrix2: Average score:  2262.2
 [1574, 2234, 1626, 1908, 2256, 2132, 2232, 2422, 3264, 1964, 2266, 4332, 2436, 1622, 2602, 2322, 1568, 2990, 2016, 1478]
 
-
+evaluate_uniformity: 
 ---------------------------------------------------------------------------------------------
 1 game 
 depth = 5
@@ -31,3 +31,6 @@ zero tile:Average score:  2886.0
 
 weightMatrix2: Average score:  3702.0
 [3702]
+
+zeroPlusSum:Average score:  2104.0
+[2104]

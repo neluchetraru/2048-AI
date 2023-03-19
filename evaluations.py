@@ -1,7 +1,8 @@
 from ai import Py2048AI
 from logic import Py2048
 import copy
-import statistics
+import sys
+
 
 def printBoard(board):
 
@@ -18,7 +19,7 @@ def score(game):
             sum += elem
     return sum
 
-def test_evaluation(num_games):
+def test_evaluation(num_games,eval_func):
 
     ai = Py2048AI(3)
     
@@ -28,19 +29,19 @@ def test_evaluation(num_games):
     for i in range(num_games):
         game = Py2048(4, 4)
         while not game.gameover:
-            best_move,_ = ai.expectimax(game,0,ai.depth)
+            best_move,_ = ai.expectimax(game,0,ai.depth,eval_func)
             game.update_move(best_move)
             game.add_tile()
             printBoard(game.board)
             game.check_gameover()
 
         scores.append(score(game))
-    return scores
+    
+    print("Average score: ", sum(scores) / len(scores))
+    print(scores)
 
 
+num_games = int(sys.argv[1])
+eval_func = sys.argv[2]
+test_evaluation(num_games,eval_func)
 
-
-scores = test_evaluation(10)
-print("Average score: ", sum(scores) / len(scores))
-print("Standard deviation: {}".format(statistics.stdev(scores)))
-print(scores)

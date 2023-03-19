@@ -25,7 +25,7 @@ def runGame():
     game = Py2048(4, 4)
 
     while not game.gameover:
-        best_move, _ = ai.expectimax(game, 0, ai.depth)
+        best_move, _ = ai.expectimax(game, 0, ai.depth,"sum")
         print('Best move: ', best_move)
         game.update_move(best_move)
         printBoard(game.board)

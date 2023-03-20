@@ -10,4 +10,4 @@ The depths we tested were 3 and 5.
 
 Example:
 
-python ./main.py 3
+python  ./main.py  3

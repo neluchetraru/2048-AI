@@ -54,6 +54,7 @@ def test_evaluation(num_games,eval_func):
     print("Average score: ", sum(scores) / len(scores))
     print("Standard deviation: ", (statistics.stdev(scores)))
     print("Number of wins: ", wins)
+    print("Max: ", max(scores))
     print(scores)
 
 

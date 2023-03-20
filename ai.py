@@ -96,6 +96,10 @@ class Py2048AI:
     def MW(self,game):
         sum = self.evaluate_mono(game) + self.evaluate_weigh_matrix(game)
         return sum
+    
+    def ZMS(self,game):
+        sum = self.evaluate_mono(game) + self.evaluate_weigh_matrix(game) +self.evaluate_sum(game)
+        return sum
 
     def evaluate_all(self,game):
         sum = self.evaluate_mono(game) + self.evaluate_sum(game) + self.evaluate_uniformity(game) + self.evaluate_weigh_matrix(game) + self.evaluate_zero_tiles(game)
@@ -147,6 +151,8 @@ class Py2048AI:
              return self.WS(game)
         elif eval_func == "ZM":
              return self.ZM(game)
+        elif eval_func == "ZMS":
+             return self.ZMS(game)
         else:
             raise ValueError('Evaluation function doesnt exist')
 

@@ -24,21 +24,6 @@ class Py2048AI:
         for row in game.board:
             zero_tiles += row.count(0)
         return zero_tiles
-
-    def evaluate_zero_plus_sum(self, game):
-        zero_tiles = 0
-        sum = 0
-
-        for row in game.board:
-            zero_tiles += row.count(0)
-        
-        
-        for row in game.board:
-            for elem in row:
-                sum += elem
-        
-        avg_eval = (zero_tiles + sum)/2
-        return avg_eval
     
     def evaluate_uniformity(self,game):
         tiles = [0]*2049
@@ -49,45 +34,27 @@ class Py2048AI:
         
         same_tiles = sum(tiles)
         return same_tiles
-       
     
-    def evaluate_uniform_plus_zero(self,game):
-        tiles = [0]*2049
-        same_tiles = 0
-        for row in game.board:
-            for elem in row:
-                tiles[elem] += 1
-        
-        same_tiles = sum(tiles)
-        
-        zero_tiles = 0
-        for row in game.board:
-            zero_tiles += row.count(0)
-        
-        total = same_tiles + zero_tiles
-        return total
-
     def evaluate_weigh_matrix(self,game):
-        weight_matrix1 = [[100,25,25,100],
-                         [25,5,5,25],
-                         [25,5,5,25],
-                         [100,25,25,100]]
+        weight_matrix_4_corners = [[100,25,25,100],
+                                    [25,5,5,25],
+                                    [25,5,5,25],
+                                    [100,25,25,100]]
         
-        weight_matrix2 = [[100,50,25,14],
-                         [25,14,7,3],
-                         [14,7,3,2],
-                         [7,3,2,1]]
+        weight_matrix_1_corner = [[100,50,25,14],
+                                [25,14,7,3],
+                                [14,7,3,2],
+                                [7,3,2,1]]
 
         sum = 0
 
         for i in range(4):
             for j in range(4):
                 if game.board[i][j] != 0:
-                    sum += game.board[i][j] * weight_matrix2[i][j] 
+                    sum += game.board[i][j] * weight_matrix_1_corner[i][j] 
         
         return sum
     
-
     def evaluate_mono(self,game):
         best = -1
         for i in range(4):
@@ -105,17 +72,34 @@ class Py2048AI:
             # Rotate the board 90 degrees clockwise
             game.board = list(zip(*game.board[::-1]))
         return best
-        
-    def evaluate_weight_plus_sum(self,game):
+
+    def ZM(self, game):
+        sum = self.evaluate_zero_tiles(game) + self.evaluate_mono(game) 
+        return sum
+    
+    def ZS(self, game):
+        sum = self.evaluate_zero_tiles(game) + self.evaluate_sum(game) 
+        return sum
+
+    def UZ(self, game):
+        sum = self.evaluate_uniformity(game) + self.evaluate_zero_tiles(game) 
+        return sum
+    
+    def WS(self,game):
+        sum = self.evaluate_weigh_matrix(game) + self.evaluate_sum(game) 
+        return sum
+
+    def WSZ(self,game):
         sum = self.evaluate_weigh_matrix(game) + self.evaluate_sum(game) + self.evaluate_zero_tiles(game)
         return sum
 
+    def MW(self,game):
+        sum = self.evaluate_mono(game) + self.evaluate_weigh_matrix(game)
+        return sum
 
-
-
-
-
-
+    def evaluate_all(self,game):
+        sum = self.evaluate_mono(game) + self.evaluate_sum(game) + self.evaluate_uniformity(game) + self.evaluate_weigh_matrix(game) + self.evaluate_zero_tiles(game)
+        return sum
 
 
     # def row_monotonicity2(self,game):
@@ -143,18 +127,26 @@ class Py2048AI:
             return self.evaluate_sum(game)
         elif eval_func == "zeroTile":
             return self.evaluate_zero_tiles(game)
-        elif eval_func == "zeroPlusSum":
-             return self.evaluate_zero_plus_sum(game)
+        elif eval_func == "ZS":
+             return self.ZS(game)
         elif eval_func == "weightMatrix":
              return self.evaluate_weigh_matrix(game)
         elif eval_func == "uniform":
              return self.evaluate_uniformity(game)
-        elif eval_func == "uniformZero":
-             return self.evaluate_uniform_plus_zero(game)
+        elif eval_func == "UZ":
+             return self.UZ(game)
         elif eval_func == "mono":
              return self.evaluate_mono(game)
-        elif eval_func == "weightSum":
-             return self.evaluate_weight_plus_sum(game) 
+        elif eval_func == "WSZ":
+             return self.WSZ(game) 
+        elif eval_func == "MW":
+             return self.MW(game)
+        elif eval_func == "all":
+             return self.evaluate_all(game)
+        elif eval_func == "WS":
+             return self.WS(game)
+        elif eval_func == "ZM":
+             return self.ZM(game)
         else:
             raise ValueError('Evaluation function doesnt exist')
 

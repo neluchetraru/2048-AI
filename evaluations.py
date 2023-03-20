@@ -2,6 +2,7 @@ from ai import Py2048AI
 from logic import Py2048
 import copy
 import sys
+import statistics
 
 
 def printBoard(board):
@@ -51,6 +52,7 @@ def test_evaluation(num_games,eval_func):
        
     
     print("Average score: ", sum(scores) / len(scores))
+    print("Standard deviation: ", (statistics.stdev(scores)))
     print("Number of wins: ", wins)
     print(scores)
 

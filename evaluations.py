@@ -31,7 +31,7 @@ def reached2048(game,win):
 
 def test_evaluation(num_games,eval_func):
 
-    ai = Py2048AI(3)
+    ai = Py2048AI(5)
     
     
     scores = []

@@ -23,19 +23,23 @@ class Py2048AI:
         zero_tiles = 0
         for row in game.board:
             zero_tiles += row.count(0)
-        return zero_tiles
+        return zero_tiles  
     
+
     def evaluate_uniformity(self,game):
-        tiles = [0]*2049
+        tiles = {}
         same_tiles = 0
         for row in game.board:
             for elem in row:
-                tiles[elem] += 1
-        
-        same_tiles = sum(tiles)
+                if elem in tiles:
+                    tiles[elem] += 1
+                else: 
+                    tiles[elem] = 1
+
+        same_tiles = sum(tiles.values()) 
         return same_tiles
     
-    def evaluate_weigh_matrix(self,game):
+    def evaluate_weight_matrix(self,game):
         weight_matrix_4_corners = [[100,25,25,100],
                                     [25,5,5,25],
                                     [25,5,5,25],
@@ -86,45 +90,32 @@ class Py2048AI:
         return sum
     
     def WS(self,game):
-        sum = self.evaluate_weigh_matrix(game) + self.evaluate_sum(game) 
+        sum = self.evaluate_weight_matrix(game) + self.evaluate_sum(game) 
         return sum
 
     def WSZ(self,game):
-        sum = self.evaluate_weigh_matrix(game) + self.evaluate_sum(game) + self.evaluate_zero_tiles(game)
+        sum = self.evaluate_weight_matrix(game) + self.evaluate_sum(game) + self.evaluate_zero_tiles(game)
+        return sum
+    
+    def WSZweight(self,game):
+        sum = self.evaluate_weight_matrix(game)*0.5 + self.evaluate_sum(game)*0.1 + self.evaluate_zero_tiles(game)*0.4
         return sum
 
     def MW(self,game):
-        sum = self.evaluate_mono(game) + self.evaluate_weigh_matrix(game)
+        sum = self.evaluate_mono(game) + self.evaluate_weight_matrix(game)
         return sum
     
     def ZMS(self,game):
-        sum = self.evaluate_mono(game) + self.evaluate_weigh_matrix(game) +self.evaluate_sum(game)
+        sum = self.evaluate_mono(game) + self.evaluate_weight_matrix(game) +self.evaluate_sum(game)
+        return sum
+    
+    def WZ(self,game):
+        sum = self.evaluate_weight_matrix(game) + self.evaluate_zero_tiles(game) 
         return sum
 
     def evaluate_all(self,game):
-        sum = self.evaluate_mono(game) + self.evaluate_sum(game) + self.evaluate_uniformity(game) + self.evaluate_weigh_matrix(game) + self.evaluate_zero_tiles(game)
+        sum = self.evaluate_mono(game) + self.evaluate_sum(game) + self.evaluate_uniformity(game) + self.evaluate_weight_matrix(game) + self.evaluate_zero_tiles(game)
         return sum
-
-
-    # def row_monotonicity2(self,game):
-    #     best = -1
-    #     for _ in range(4):
-    #         current = 0
-    #         # Check monotonicity in rows
-    #         for row in range(4):
-    #             for col in range(3):
-    #                 if game.board[row][col] >= game.board[row][col + 1]:
-    #                     current += 1
-    #         # Check monotonicity in columns
-    #         for col in range(4):
-    #             for row in range(3):
-    #                 if game.board[row][col] >= game.board[row + 1][col]:
-    #                     current += 1
-    #         if current > best:
-    #             best = current
-    #         # Rotate the board 90 degrees clockwise
-    #         game.board = list(zip(*game.board[::-1]))
-    #     return best
 
     def evaluate(self, game, eval_func):
         if eval_func == "sum":
@@ -134,7 +125,7 @@ class Py2048AI:
         elif eval_func == "ZS":
              return self.ZS(game)
         elif eval_func == "weightMatrix":
-             return self.evaluate_weigh_matrix(game)
+             return self.evaluate_weight_matrix(game)
         elif eval_func == "uniform":
              return self.evaluate_uniformity(game)
         elif eval_func == "UZ":
@@ -153,6 +144,10 @@ class Py2048AI:
              return self.ZM(game)
         elif eval_func == "ZMS":
              return self.ZMS(game)
+        elif eval_func == "WZ":
+             return self.WZ(game)
+        elif eval_func == "WSZweight":
+             return self.WSZweight(game)
         else:
             raise ValueError('Evaluation function doesnt exist')
 

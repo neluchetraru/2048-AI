@@ -21,11 +21,13 @@ def printBoard(board):
 
 
 def runGame():
+    #Depth = 3
     ai = Py2048AI(3)
+    #board size:4x4
     game = Py2048(4, 4)
 
     while not game.gameover:
-        best_move, _ = ai.expectimax(game, 0, ai.depth,"sum")
+        best_move, _ = ai.expectimax(game, 0, ai.depth,"weightMatrix")
         print('Best move: ', best_move)
         game.update_move(best_move)
         printBoard(game.board)

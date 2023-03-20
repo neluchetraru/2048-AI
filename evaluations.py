@@ -20,6 +20,7 @@ def score(game):
             sum += elem
     return sum
 
+
 def reached2048(game,win):
     
     for row in game.board:

@@ -2,7 +2,7 @@ from ai import Py2048AI
 from logic import Py2048
 import time
 import copy
-
+import sys
 
 def score(game):
     sum = 0
@@ -20,9 +20,9 @@ def printBoard(board):
     print('----------------------------')
 
 
-def runGame():
+def runGame(depth):
     #Depth = 3
-    ai = Py2048AI(3)
+    ai = Py2048AI(depth)
     #board size:4x4
     game = Py2048(4, 4)
 
@@ -38,19 +38,5 @@ def runGame():
 
     return score(game)
 
-
-runGame()
-# def main():
-#     filename = 'ExpectiMax_total_score_heuristic.csv'
-#     with open(filename, 'w') as f:
-#         f.write('iteration, score\n')
-
-#     for i in range(100):
-#         print('Iteration: ', i)
-#         score = runGame()
-#         with open(filename, 'a') as f:
-#             f.write(str(i) + ', ' + str(score) + '\n')
-
-
-# if __name__ == '__main__':
-#     main()
+depth = int(sys.argv[1])
+runGame(depth)
